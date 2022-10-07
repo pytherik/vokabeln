@@ -38,7 +38,7 @@ clumsy,ungeschickt,tollpatschig,0,0,0,0
 colon,Doppelpunkt,0,1,1,0
 compelling,zwingend,verlockend,unwiderstehlich,0,0,0,0
 complaint,Beschwerde,0,0,0,0
-compound,zusammengesetzt,kompliziert,0,0,0,0
+compound,zusammengesetzt,kompliziert,0,1,0,1
 compound statement,Verbundanweisung,0,0,0,0
 comprehensive,umfassend,0,0,0,0
 computation,Berechnung,0,0,0,0
@@ -777,7 +777,7 @@ leafy,belaubt,grün,Blatt-,laubig,679,0,0,0
 disheveled,zerzaust,unordentlich,ungepflegt,derangiert,strubbelig,679,0,0,0
 to preordain,vorherbestimmen,679,0,0,0
 grubby,schmuddelig,dreckig,schmutzig,schmuddlig,zwielichtig,schmierig,679,0,0,0
-upholstery,Polsterung,Polster,Polstermöbel,679,0,0,0
+upholstery,Polsterung,Polster,Polstermöbel,679,1,0,1
 petulant,launisch,bockig,zickig,launenhaft,gereizt,679,1,0,1
 ludicrous,lächerlich,grotesk,aberwitzig,albern,skurril,haarsträubend,lachhaft,679,0,0,0
 to sue,klagen,prozessieren,679,0,0,0
