@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 from datetime import datetime
 from eb_utils.helpers import Colors, clear
-import re, os
 from os import system 
 from random import randint
-import sys
-import csv
-
+import re, os, sys, csv
 
 col = Colors()
 ja =   ["j", "y", "ja", "yes"]
@@ -97,8 +94,7 @@ class Vokabeln:
         elif wahl == 3: self.anlegen()
         elif wahl == 4: self.aendern2()
         elif wahl ==42: self.score_löschen()
-        else:
-            self.ende()
+        else: self.ende()
         
     def find(self, vok):
         """ Indizes gefundener Einträge in Liste ausgeben """
@@ -291,19 +287,14 @@ class Vokabeln:
         
         heute = len(self.stats)
         clear()
-
         print(self.title)
-        print("\n\n" + chr(717) * 45)
-        print("Möchtest du den Eintrag so übernehmen ?".center(45))
-        print(chr(713) * 45)
-        print()   
+        print(f"\n\n\n{chr(717)*45}\n{'Möchtest du den Eintrag so übernehmen ?'.center(45)}\n{chr(713)*45}\n")
         self.anzeigen(fremd, deutsch)
         self.fremd.append(fremd)
         self.deutsch.append(deutsch)
         self.meta.append(heute)
         self.score.append([0, 0, 0])
-        print("\nAlles O.K. (j/n) ?", end = " ›› ")
-        if not input () in ja:
+        if not input ("\nAlles O.K. (j/n) ? ›› ") in ja:
             self.aendern(index=len(self.fremd)-1, neue_vok=True)
         self.hinzugefügt += 1
         self.ende(neu=True)
@@ -317,8 +308,8 @@ class Vokabeln:
         if ran and dazu:
             self.deutsch[ran].append(dazu)
             self.anzeigen(self.fremd[ran], self.deutsch[ran])
-            print("\nGefällt's dir so (j/n)?", end = " ›› ")
-            janein = input () in ja
+        
+            janein = input ("\nGefällt's dir so (j/n)? ›› ") in ja
             if not janein and neue_vok:         # bei Unzufriedenheit
                 self.aendern(ran, neue_vok)     # zu den Änderungsoptionen 
             elif not janein and not neue_vok:
@@ -331,8 +322,7 @@ class Vokabeln:
                 self.score[ran][1] += 1
                 self.richtig_heute += 1
                 print(f"\n\n{self.st}\n{'Dafür gibts einen Schlumpf ins Heft :-)'.center(45)}\n{self.st}")
-                print("\n<enter>", end = "")
-                weiter = input()
+                weiter = input("\n<enter>")
                 self.menu()
         elif ran:
             
@@ -347,24 +337,24 @@ class Vokabeln:
                 return
             else:
                 self.bearbeiten(ran, vok)
+
     def aendern2(self, vok=False):
         """ ändern oder anlegen ? """
+
         clear()
         print(self.title)
         
         if not vok:                                 # neue Suche im Heft
-            print("\n\n" + chr(717) * 45)
-            print("Gib das Wort ein, das du ändern möchtest.".center(45))
-            print(chr(713) * 45)
-            print("\n", end = " ›› ")
-            vok = input()
+            print()
+            print(f"\n\n{chr(717)*45}\n{'Gib das Wort ein, das du ändern möchtest.'.center(45)}\n{chr(713)*45}")
+        
+            vok = input("\n\n ›› ")
             if not vok:
                 self.menu()
             found = self.find(vok)
             if not found:                           # nicht drin, kann angelegt werden
                 print(f"\n'{vok}' ist noch nicht im Heft !")
-                print("\nDu kannst es jetzt hinzufügen (j/n).",end = " ›› ")
-                if  not input () in ja:
+                if  not input ("\nDu kannst es jetzt hinzufügen (j/n). ›› ") in ja:
                     self.menu()                     # soll nicht rein 
                 else:
                     self.aendern2(vok)              # soll rein
@@ -375,25 +365,19 @@ class Vokabeln:
                         i = ((len(found)+1) - len(found[found.index(index):]))
                         if i > 3:
                             if not i % 4:           # 4 Vok pro Seite anz.
-                                print("<enter>", end = "")
-                                weiter = input()
+                                weiter = input("<enter>")
                                 clear()
-                                print(self.title)
-                                print("\n\n\n")
+                                print(f"{self.title}\n\n\n")
                                                     # Änderugsdatum abfragen
                         if int(self.meta[index]) > len(self.stats)-1:
-                            print(f"<{found.index(index)+1}>  ", end = "")
-                            print("geändert heute.")
+                            print(f"<{found.index(index)+1}>  geändert heute.")
                         elif self.meta[index] == "0" or self.meta[index] == 0:
-                            print(f"<{found.index(index)+1}>  ", end = "")
-                            print("geändert vor dem 10.05.2020")
+                            print(f"<{found.index(index)+1}>  \ngeändert vor dem 10.05.2020")
                         else:
                             vom = self.stats[int(self.meta[index])]
-                            print(f"<{found.index(index)+1}>  ", end = "")
-                            print(f"Eintrag vom {vom[-3]}.{vom[-4]}.{vom[-5]}")
+                            print(f"<{found.index(index)+1}>  Eintrag vom {vom[-3]}.{vom[-4]}.{vom[-5]}")
                         self.anzeigen(self.fremd[index], self.deutsch[index])                        
-                print("\nWelchen Eintrag möchtest du ändern ?\n")
-                print(f"<1> - <{len(found)}>", end = "")
+                print(f"\nWelchen Eintrag möchtest du ändern ?\n\n<1> - <{len(found)}>", end = "")
                 nr = 0
                 while nr < 1 or nr > len(found):
                     try:
@@ -405,47 +389,40 @@ class Vokabeln:
             else:
                 self.aendern(index = found[0])       
                                                      # Anlegen nach gescheiterter Suche
-        print(f"\n\n\nIst {vok} das englische Wort ?", end = " ›› ")
-        if input () in ja:
+        if input (f"\n\n\nIst {vok} das englische Wort ? ›› ") in ja:
             self.anlegen(vok)                        # Anlegen normal
         else:
             self.anlegen(vok, 2)                     # Anlegen als Bedeutung 1
         
     def aendern(self, index, neue_vok=False):        # ändert Eintrag[index] oder
-        clear()                              # new_vok = neu anzulegenden Eintr.
+        clear()                                      # new_vok = neu anzulegenden Eintr.
         
         self.check_date()
         
-        print(self.title)
-        print("\n\n")
+        print(f"{self.title}\n\n\n")
         self.anzeigen(self.fremd[index], self.deutsch[index])
-        print("\nmöchtest du: \n\n<1> den Eintrag löschen")
-        print("<2> Bedeutung hinzfügen")
-        print("<3> Bedeutung ändern/ löschen")
-        print("\n›› ", end = "")     
-        nr = input()
+        print("\nmöchtest du: \n\n<1> den Eintrag löschen\n<2> Bedeutung hinzfügen\n<3> Bedeutung ändern/ löschen")
+        nr = input("\n\n›› ")
+        
         if not nr or nr not in ["1", "2", "3"]:
             if neue_vok:
                  self.hinzugefügt += 1
             self.menu()
         elif nr == "1":
-            print("\nSicher (j/n) ? ", end = " ›› ")
-            if not input () in ja:
+            if not input ("\nSicher (j/n) ?  ›› ") in ja:
                 self.aendern(index)
             del self.deutsch[index]
             del self.fremd[index]
             del self.meta[index]
             del self.score[index]
-            print("\nDer Eintrag ist gelöscht !\n\nweiter mit <enter>", end = "")
-            weiter = input()
+            weiter = input("\nDer Eintrag ist gelöscht !\n\nweiter mit <enter>")
             self.menu()
         elif nr == "2":
             clear()
 
             print(self.title)
             self.anzeigen(self.fremd[index], self.deutsch[index])
-            print(f"\nBedeutung {len(self.deutsch[index])+1}        :", end = " ›› ")
-            bedeutung = input()
+            bedeutung = input(f"\nBedeutung {len(self.deutsch[index])+1}        : ›› ")
             if bedeutung:
                 self.bearbeiten(index, bedeutung, neue_vok=True)
             else:
@@ -462,17 +439,14 @@ class Vokabeln:
                 x.append(str(i))
                 i += 1
             print(chr(713) * 45)
-            print(f"\nWelche Bedeutung <1> - <{i}> ?", end = " ›› ")
-            nr = input()
+            nr = input(f"\nWelche Bedeutung <1> - <{i}> ? ›› ")
             
             if nr not in x:
                 self.aendern(index, neue_vok=True)
             else:
                 weg = self.deutsch[index][int(nr)-1]
-                print(f"\n   Soso, {weg} ist also falsch ... ")
-                print("\nRichtig wäre dann :")
-                print("Löschen mit <enter>     ", end = " ›› ")
-                behalten = input()
+                print(f"\n   Soso, {weg} ist also falsch ... \n\nRichtig wäre dann :")
+                behalten = input("Löschen mit <enter>      ›› ")
                 if not behalten:
                     self.deutsch[index].remove(weg)
                 else:
