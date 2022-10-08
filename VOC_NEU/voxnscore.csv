@@ -38,7 +38,7 @@ clumsy,ungeschickt,tollpatschig,0,0,0,0
 colon,Doppelpunkt,0,1,1,0
 compelling,zwingend,verlockend,unwiderstehlich,0,0,0,0
 complaint,Beschwerde,0,0,0,0
-compound,zusammengesetzt,kompliziert,0,0,0,0
+compound,zusammengesetzt,kompliziert,0,1,0,1
 compound statement,Verbundanweisung,0,0,0,0
 comprehensive,umfassend,0,0,0,0
 computation,Berechnung,0,0,0,0
@@ -95,7 +95,7 @@ forest,Wald,Forst,0,0,0,0
 fragrand,duftend,0,0,0,0
 fringe,Randgebiet,Umrandung,0,1,0,1
 from scratch,aus dem Nichts,ganz von Anfang an,ganz von Vorne,0,0,0,0
-frowned upon,verpönt,0,0,0,0
+frowned upon,verpönt,0,1,0,1
 glistening,glitzernd,funkelnd,0,0,0,0
 handy,praktisch,nützlich,0,0,0,0
 haunted,verfolgt,heimgesucht,0,1,0,1
@@ -240,7 +240,7 @@ to conclude,folgern,0,0,0,0
 to contrive,arrangieren,entwerfen,ausklügeln,0,0,0,0
 to curdle,gerinnen,stocken,0,0,0,0
 to defer,verschieben,aufschieben,0,0,0,0
-to delve,forschen,graben,sich senken,0,0,0,0
+to delve,forschen,graben,sich senken,0,1,0,1
 to deploy (sb.),anwenden,einsetzen (jmd.),0,1,0,1
 to distinguish,unterscheiden,0,0,0,0
 to dole out,austeilen,ausspucken,rationieren,0,0,0,0
@@ -360,7 +360,7 @@ credential,Qualifikation,Brechtigungsnachweis,Anmeldeinformation,Presseausweis,0
 blackberry,Brombeere,10,0,0,0
 eloquent,eloquent,8,0,0,0
 cat,Katze,11,1,1,0
-mouse,Maus,11,0,0,0
+mouse,Maus,11,1,1,0
 dog,Hund,18,1,1,0
 to convey,übermitteln,befördern,versenden,liefern,bringen,31,0,0,0
 to snorkel,schnorcheln,33,0,0,0
@@ -375,7 +375,7 @@ recognition,Anerkennung,Bestätigung,Identifizierung,Wiedererkennen,46,0,0,0
 regurgitated,erbrochen,46,0,0,0
 pointy-headed,oberschlau,superschlau,46,0,0,0
 to rant,schimpfen,geifern,herumzetern,46,1,0,1
-to reel in,einfangen,an Land ziehen,einholen,46,0,0,0
+to reel in,einfangen,an Land ziehen,einholen,46,1,0,1
 sham,Schein-,fingiert,vorgetäuscht,imitiert,46,0,0,0
 to traipse,bummeln,latschen,46,0,0,0
 to jot down,hinwerfen,fix notieren,schnell hinschreiben,schnell notieren,46,0,0,0
@@ -542,7 +542,7 @@ to pun,kalauern,mit Worten spielen,364,0,0,0
 to intend,beabsichtigen,vorhaben,meinen,364,0,0,0
 to preface,einleiten mit,mit einem Vorwort versehen,370,0,0,0
 preface,Vorwort,Einleitung,Vorbemerkung,Vorrede,376,0,0,0
-reference,Bezug,Empfehlung,Hinweis,Betreff,Referenz,Verweis,376,1,0,1
+reference,Bezug,Empfehlung,Hinweis,Betreff,Referenz,Verweis,376,2,1,1
 instant,augenblicklich,sofortig,dringend,unmittelbar,tafelfertig,379,0,0,0
 composite,Gemisch,Zusammensetzung,Verbundwerkstoff,379,0,0,0
 Yikes!,Huch!,Pfui!,Ach du schande!,Du lieber Himmel!,384,0,0,0
@@ -702,7 +702,7 @@ to gibber,brabbeln,quatschen,609,0,0,0
 to jam,blockieren,klemmen,stauen,stören,verstopfen,lahmlegen,609,0,0,0
 sleeve,Ärmel,Hülle,Hülse,Muffe,Manschette,609,0,0,0
 to slump,fallen,zusammensacken,absinken,abnehmen,609,0,0,0
-tingling,Kribbeln,Prickeln,609,0,0,0
+tingling,Kribbeln,Prickeln,609,1,0,1
 to jeer,spotten,verhöhnen,verspotten,johlen,609,0,0,0
 peculiar,seltsam,merkwürdig,eigenartig,609,0,0,0
 riveted,genietet,vernietet,aufgenietet,609,0,0,0
@@ -777,7 +777,7 @@ leafy,belaubt,grün,Blatt-,laubig,679,0,0,0
 disheveled,zerzaust,unordentlich,ungepflegt,derangiert,strubbelig,679,0,0,0
 to preordain,vorherbestimmen,679,0,0,0
 grubby,schmuddelig,dreckig,schmutzig,schmuddlig,zwielichtig,schmierig,679,0,0,0
-upholstery,Polsterung,Polster,Polstermöbel,679,0,0,0
+upholstery,Polsterung,Polster,Polstermöbel,679,1,0,1
 petulant,launisch,bockig,zickig,launenhaft,gereizt,679,1,0,1
 ludicrous,lächerlich,grotesk,aberwitzig,albern,skurril,haarsträubend,lachhaft,679,0,0,0
 to sue,klagen,prozessieren,679,0,0,0
@@ -906,7 +906,7 @@ bullet point,Spigelstrich,Aufzählungspunkt,Stichpunkt,933,0,0,0
 issue,Streitpunkt,Thema,Ausgabe,Aspekt,Sachverhalt,Angelegenheit,Problem,933,0,0,0
 to hamper,behindern,erschweren,hemmen,verhindern,hindern,938,0,0,0
 pristine,makellos,unberührt,unverdorben,ursprünglich,tadellos,früher,vormalig,938,0,0,0
-worthwhile,lohnenswert,erstrebenswert,lohnend,wertvoll,rentabel,938,0,0,0
+worthwhile,lohnenswert,erstrebenswert,lohnend,wertvoll,rentabel,938,1,0,1
 to botch,verpfuschen,vermasseln,sudeln,pfuschen,vermurksen,938,0,0,0
 confidence,Vertrauen,Zuversicht,Selbstvertrauen,Zutrauen,Glauben,943,0,0,0
 to commute,pendeln,umwandeln,ändern,umtauschen,vertauschen,947,0,0,0
@@ -985,3 +985,8 @@ off the shelf,ab Lager,direkt vom Regal,gebrauchsfertig,handelsüblich,serienmä
 paramount,höchst,hervorragend,vorrangig,überragend,1057,0,0,0
 cranberry,Preisselbeere,1064,0,0,0
 pivotal,zentral,ausschlaggebend,grundlegend,1068,0,0,0
+applause,Applaus,Beifall,1097,0,0,0
+lord,Herr,Lord,Gott,1097,0,0,0
+black,schwarz,1105,0,0,0
+walk,laufen,gehen,1109,0,0,0
+to try,versuchen,probieren,1116,0,0,0
