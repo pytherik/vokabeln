@@ -6,12 +6,10 @@ from os import system
 from random import randint
 import sys
 import csv
-gesamt_heute  = 0
-richtig_heute = 0
-falsch_heute  = 0
-hinzugefügt   = 0
+
 
 col = Colors()
+ja =   ["j", "y", "ja", "yes"]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 path_csv = BASE_DIR + '/VOC_NEU/voxnscore.csv'
@@ -19,8 +17,13 @@ path_data = BASE_DIR + '/VOC_NEU/stats.csv'
 
 class Vokabeln:
     """ Vokabeltrainer """
-    
-    title = f"{'*'*45}\n*{col.BR}{'VOKABELHEFT'.center(43)}{col.E}*\n{'*' * 45}"
+
+    gesamt_heute  = 0
+    richtig_heute = 0
+    falsch_heute  = 0
+    hinzugefügt   = 0
+    st = "*" * 45
+    title = f"{st}\n*{col.BR}{'VOKABELHEFT'.center(43)}{col.E}*\n{st}"
     fremd   = []      # Vok. Fremdsprache  (path_csv)
     deutsch = []      # Vok. Deutsch       (path_csv)
     meta    = []      # link zu Statistik  (path_csv)  (Erstelldatum)
@@ -73,27 +76,22 @@ class Vokabeln:
         
         print(f"\n{data[6]}.{data[5]}.{data[4]}    Sammlung gesamt:{str(data[0]).rjust(5)}", end = "")           
         print(f"    {data[7]}:{data[8]}")
-        if not hinzugefügt:
+        if not  self.hinzugefügt:
             print("\n\n")
         else:
-            print(f"Hinzugefügt    :{str(hinzugefügt).rjust(5)}\n") 
-        print("_" * 45)
-        print(f"Abfragen gesamt:{str(data[1]).rjust(5)}   heute:{str(gesamt_heute).rjust(3)}\n")
-        print(f"richtig  gesamt:{str(data[2]).rjust(5)}   heute:{str(richtig_heute).rjust(3)}")
-        print(f"falsch   gesamt:{str(data[3]).rjust(5)}   heute:{str(falsch_heute).rjust(3)}")
-        print("" + ("_" * 45))
-        print("\n<1> Abfragen")
-        print("\n<2> Nachschlagen")
-        print("\n<3> Neue Vokabel")
-        print("\n<4> Bearbeiten")
-        print("\n<5> BEENDEN")
-        print("\n> ", end = "")
+            print(f"Hinzugefügt    :{str(self.hinzugefügt).rjust(5)}\n") 
+        print(f"{'_'*45}\nAbfragen gesamt:{str(data[1]).rjust(5)}   heute:{str( self.gesamt_heute).rjust(3)}\n")
+        print(f"richtig  gesamt:{str(data[2]).rjust(5)}   heute:{str( self.richtig_heute).rjust(3)}")
+        print(f"falsch   gesamt:{str(data[3]).rjust(5)}   heute:{str( self.falsch_heute).rjust(3)}\n{'_'*45}")
+        
+        print("\n1 Abfragen\n2 Nachschlagen\n3 Neue Vokabel\n4 Bearbeiten\n5 BEENDEN\n\n›› ", end = "")
+
         wahl = 0
         while wahl not in (1, 2, 3, 4, 5, 42) or wahl == "":
             try:
                 wahl = int(input())
             except ValueError:
-                print(">1 - 5<\n> ")
+                print(">1 - 5<\n›› ")
         if   wahl == 1: self.lernen()
         elif wahl == 2: self.suchen()
         elif wahl == 3: self.anlegen()
@@ -128,72 +126,63 @@ class Vokabeln:
             if len(found[found.index(index):]) > 3:
                 i = (len(found)+1) - len(found[found.index(index):]) 
                 if not i % 4:
-                    print("<enter>", end = "")
-                    weiter = input()
+                    weiter = input("<enter>")
                     clear()
-                    print(self.title)
-                    print("\n\n\n")
+                    print(f"{self.title}\n\n\n\n")
             self.anzeigen(self.fremd[index], self.deutsch[index])
 
     def anzeigen(self, fremd, deutsch):
         """ Vokabel anzeigen """ 
        
-        print((chr(717) * 45))
-        print(f"Englisch  : {fremd}\n")
+        print(f"{chr(717)*45}\nEnglisch  : {fremd}\n")
         i = 0
         for wort in deutsch:
             print(f"Deutsch {i+1} : {wort}")
             i += 1
-        print(chr(713) * 45)
-        print()
+        print(f"{chr(713)*45}\n")
                 
     def lernen(self):
         """ Vokabeln abfragen """
+        
         clear()
         self.check_date()
         print(self.title)
         
-        global gesamt_heute
-        global richtig_heute
-        global falsch_heute
-
-        gesamt_heute += 1
+        self.gesamt_heute += 1
         ran = randint(0, len(self.fremd)-1)
         print(f"\n\n{chr(717) * 45}")
         print(f"Was heißt '{self.fremd[ran]}' auf deutsch ?".center(45))
         print(chr(713) * 45)
         if self.score[ran][0] != 0:
             print(f"Schon {self.score[ran][1]} mal richtig und {self.score[ran][2]}mal falsch!")
-        print("\n", end = self.prompt())
 
-        antwort = input()
+        antwort = input("\n ›› ")
         self.score[ran][0] += 1
         if antwort in self.deutsch[ran]:
             print("\nRichtig !\n")
             self.anzeigen(self.fremd[ran], self.deutsch[ran])        
-            richtig_heute +=1
+            self.richtig_heute +=1
             self.score[ran][1] += 1
         else:
             print("\nNicht ganz :")
             self.anzeigen(self.fremd[ran], self.deutsch[ran])
             if antwort:
                 print("\nSiehst du ein, dass du falsch lagst  <1> ")
-                print(f"oder soll deine Lösung mit ins Heft  <2> ?\n{self.prompt()}")
+                print(f"oder soll deine Lösung mit ins Heft  <2> ?\n", end = " ›› ")
                 nr = input()
                 if not nr or nr == "1":
-                    falsch_heute += 1
-                    self.score[ran][2] += 1
                     clear()
+                    self.falsch_heute += 1
+                    self.score[ran][2] += 1
                     print(self.title)
-                    print("\n\n\nAlles klar !\n\n\n")
-                    print(f"\n\n{col.R}{'F A L S C H !'.center(45)}{col.E}\n\n")
+                    print(f"\n\n\nAlles klar !   {col.R}F A L S C H !{col.E}\n\n")
                 elif nr == "2":
                     self.bearbeiten(ran, antwort)
             else:
-                falsch_heute +=1
+                self.falsch_heute +=1
                 self.score[ran][2] += 1
-        print(f"\nWeiterlernen (j/n) ?{self.prompt()}")
-        if self.j_n() :
+        
+        if input ("\nWeiterlernen (j/n) ? ›› ") in ja :
             self.lernen()
         else:
             self.menu()
@@ -204,10 +193,11 @@ class Vokabeln:
         clear()
         self.check_date()
         data = self.statistik()
+        
         print(self.title)
-
         print(f"\n\n{chr(717) * 45}")
-        vok = input(f"{'Wonach suchst du'.center(45)}\n{chr(713) * 45}\n{self.prompt()}")
+        
+        vok = input(f"{'Wonach suchst du'.center(45)}\n{chr(713) * 45}\n ›› ")
         if not vok:
             self.menu()
         if len(vok) < 3:
@@ -223,8 +213,8 @@ class Vokabeln:
                         print("<enter>", end = "")
                         weiter = input()
                         clear()
-                        print(self.title)
-                        print("\n\n\n")
+                        print(f"{self.title}\n\n\n\n")
+                        
                 if int(self.meta[index]) > len(self.stats)-1 or self.stats[int(self.meta[index])][6] == data[6]:
                     print("geändert heute.")
                 elif self.meta[index] == "0" or self.meta[index] == 0:
@@ -235,17 +225,18 @@ class Vokabeln:
                 self.anzeigen(self.fremd[index], self.deutsch[index])
         elif not found:
             print("\n... ist noch nicht dabei !")
-            print(f"\n'{vok}' anlegen (j/n) ?", end = self.prompt())
-            if self.j_n():
+            print(f"\n'{vok}' anlegen (j/n) ?", end = " ›› ")
+            if input () in ja:
                 self.aendern2(vok)
         
-        print("\nWeitersuchen (j/n) ?", end = self.prompt())
-        if self.j_n(): self.suchen()
+        if input("\nWeitersuchen (j/n) ? ›› ") in ja: self.suchen()
+        
         else:
             self.menu()
             
     def anlegen(self, vok=False, i=1):
         """ neue Vokabeln hinzufügen """
+        
         clear()
         self.check_date()
         print(self.title)
@@ -256,38 +247,32 @@ class Vokabeln:
             vok = False
         
         print(f"\nS P A M !  Wort Nr.{len(self.fremd)+1}\n\n")
-        print(f"Du  fügst  heute das {hinzugefügt + 1}. Wort hinzu!")
-        print("_" * 45)
+        print(f"Du  fügst  heute das { self.hinzugefügt + 1}. Wort hinzu!\n{'_'* 45}")
         if vok :
-            print(f"\nDas neue Wort (en) :{self.prompt()}{vok}")
-            print("richtig   (j_n) ?", end = " > ")
-            if not self.j_n():
+            print(f"\nDas neue Wort (en) : ›› {vok}")
+            if not input ("   richtig   (j_n) ? ›› ") in ja:
                 self.anlegen()
             
         while not vok:
-            print("\nDas neue Wort (en) :", end = self.prompt())
-            vok = input()
+            vok = input("\n\nDas neue Wort (en) : ›› ")
             if not vok:
                 self.menu()
-            elif self.find(vok):           
+            elif self.find(vok):
                 print("\nHamwa schon:")
                 self.trans(vok, hamwa = True)
-                print("\n\nTrotzdem weiter (j/n) ?", end = self.prompt())
-                if not self.j_n():
+                if not input ("\n\nTrotzdem weiter (j/n) ? ›› ") in ja:
                     self.menu()
                 else:
                     self.anlegen(vok)
-            print("richtig   (j_n) ?", end = " > ")
-            if not self.j_n():
+            if not input ("   richtig   (j_n) ? ›› ") in ja:
                 vok = False
         fremd = vok
         save = False
         if i == 2:
-            print("Bedeutung 1        :", end = self.prompt())
+            print("Bedeutung 1        :", end = " ›› ")
             print(deutsch[0])
         while not save:
-            print(f"Bedeutung {i}        :", end = self.prompt())
-            bedeutung = input()               
+            bedeutung = input(f"Bedeutung {i}        : ›› ")               
             if not bedeutung and not deutsch:
                 self.menu()                   # nichts geändert
             elif not bedeutung:
@@ -296,15 +281,14 @@ class Vokabeln:
             else:
                 deutsch.append(bedeutung)
             i += 1    
-        print("\nweitere Vokabeln (j/n) ?", end = self.prompt())
-        if self.j_n():
+        if input ("\nweitere Vokabeln (j/n) ? ›› ") in ja:
             self.anlegen()
         else:
             self.menu()
 
     def behalten(self, fremd, deutsch):
         """ Vokabeln aktualisieren """
-        global hinzugefügt
+        
         heute = len(self.stats)
         clear()
 
@@ -318,10 +302,10 @@ class Vokabeln:
         self.deutsch.append(deutsch)
         self.meta.append(heute)
         self.score.append([0, 0, 0])
-        print("\nAlles O.K. (j/n) ?", end = self.prompt())
-        if not self.j_n():
+        print("\nAlles O.K. (j/n) ?", end = " ›› ")
+        if not input () in ja:
             self.aendern(index=len(self.fremd)-1, neue_vok=True)
-        hinzugefügt += 1
+        self.hinzugefügt += 1
         self.ende(neu=True)
             
     def bearbeiten(self, ran=False, dazu=False, neue_vok=False):
@@ -329,15 +313,12 @@ class Vokabeln:
         clear()
 
         print(self.title)
-        global richtig_heute
-        global falsch_heute
-        global hinzugefügt
         
         if ran and dazu:
             self.deutsch[ran].append(dazu)
             self.anzeigen(self.fremd[ran], self.deutsch[ran])
-            print("\nGefällt's dir so (j/n)?", end = self.prompt())
-            janein = self.j_n()
+            print("\nGefällt's dir so (j/n)?", end = " ›› ")
+            janein = input () in ja
             if not janein and neue_vok:         # bei Unzufriedenheit
                 self.aendern(ran, neue_vok)     # zu den Änderungsoptionen 
             elif not janein and not neue_vok:
@@ -348,23 +329,21 @@ class Vokabeln:
                 self.menu()
             else:
                 self.score[ran][1] += 1
-                richtig_heute += 1
-                print("\n\n" + "*" * 45)
-                print("Dafür gibts einen Schlumpf ins Heft :-)".center(45))
-                print("*" * 45)
+                self.richtig_heute += 1
+                print(f"\n\n{self.st}\n{'Dafür gibts einen Schlumpf ins Heft :-)'.center(45)}\n{self.st}")
                 print("\n<enter>", end = "")
                 weiter = input()
                 self.menu()
         elif ran:
-            print("\nWie denn jetzt ?",end = self.prompt())
-            vok = input()
+            
+            vok = input("\nWie denn jetzt ? ›› ")
             if not vok:
                 print("\nOkay. Dann bleibt's dabei!\n")
                 self.anzeigen(self.fremd[ran], self.deutsch[ran])
                 print("\nWeiter mit <enter>", end = "")
                 weiter = input()
                 self.score[ran][2] += 1
-                falsch_heute += 1
+                self.falsch_heute += 1
                 return
             else:
                 self.bearbeiten(ran, vok)
@@ -377,15 +356,15 @@ class Vokabeln:
             print("\n\n" + chr(717) * 45)
             print("Gib das Wort ein, das du ändern möchtest.".center(45))
             print(chr(713) * 45)
-            print("\n", end = self.prompt())
+            print("\n", end = " ›› ")
             vok = input()
             if not vok:
                 self.menu()
             found = self.find(vok)
             if not found:                           # nicht drin, kann angelegt werden
                 print(f"\n'{vok}' ist noch nicht im Heft !")
-                print("\nDu kannst es jetzt hinzufügen (j/n).",end = self.prompt())
-                if  not self.j_n():
+                print("\nDu kannst es jetzt hinzufügen (j/n).",end = " ›› ")
+                if  not input () in ja:
                     self.menu()                     # soll nicht rein 
                 else:
                     self.aendern2(vok)              # soll rein
@@ -426,15 +405,15 @@ class Vokabeln:
             else:
                 self.aendern(index = found[0])       
                                                      # Anlegen nach gescheiterter Suche
-        print(f"\n\n\nIst {vok} das englische Wort ?", end = self.prompt())
-        if self.j_n():
+        print(f"\n\n\nIst {vok} das englische Wort ?", end = " ›› ")
+        if input () in ja:
             self.anlegen(vok)                        # Anlegen normal
         else:
             self.anlegen(vok, 2)                     # Anlegen als Bedeutung 1
         
     def aendern(self, index, neue_vok=False):        # ändert Eintrag[index] oder
         clear()                              # new_vok = neu anzulegenden Eintr.
-        global hinzugefügt
+        
         self.check_date()
         
         print(self.title)
@@ -443,15 +422,15 @@ class Vokabeln:
         print("\nmöchtest du: \n\n<1> den Eintrag löschen")
         print("<2> Bedeutung hinzfügen")
         print("<3> Bedeutung ändern/ löschen")
-        print("\n>", end = "")     
+        print("\n›› ", end = "")     
         nr = input()
         if not nr or nr not in ["1", "2", "3"]:
             if neue_vok:
-                hinzugefügt += 1
+                 self.hinzugefügt += 1
             self.menu()
         elif nr == "1":
-            print("\nSicher (j/n) ? ", end = self.prompt())
-            if not self.j_n():
+            print("\nSicher (j/n) ? ", end = " ›› ")
+            if not input () in ja:
                 self.aendern(index)
             del self.deutsch[index]
             del self.fremd[index]
@@ -465,7 +444,7 @@ class Vokabeln:
 
             print(self.title)
             self.anzeigen(self.fremd[index], self.deutsch[index])
-            print(f"\nBedeutung {len(self.deutsch[index])+1}        :", end = self.prompt())
+            print(f"\nBedeutung {len(self.deutsch[index])+1}        :", end = " ›› ")
             bedeutung = input()
             if bedeutung:
                 self.bearbeiten(index, bedeutung, neue_vok=True)
@@ -483,7 +462,7 @@ class Vokabeln:
                 x.append(str(i))
                 i += 1
             print(chr(713) * 45)
-            print(f"\nWelche Bedeutung <1> - <{i}> ?", end = self.prompt())
+            print(f"\nWelche Bedeutung <1> - <{i}> ?", end = " ›› ")
             nr = input()
             
             if nr not in x:
@@ -492,24 +471,24 @@ class Vokabeln:
                 weg = self.deutsch[index][int(nr)-1]
                 print(f"\n   Soso, {weg} ist also falsch ... ")
                 print("\nRichtig wäre dann :")
-                print("Löschen mit <enter>     ", end = self.prompt())
+                print("Löschen mit <enter>     ", end = " ›› ")
                 behalten = input()
                 if not behalten:
                     self.deutsch[index].remove(weg)
                 else:
                     self.deutsch[index][int(nr)-1]= behalten
                 self.anzeigen(self.fremd[index], self.deutsch[index])
-                print("\nOkay so ?", end = self.prompt())
-                if self.j_n():
+                print("\nOkay so ?", end = " ›› ")
+                if input () in ja:
                     self.menu()
-                if not self.j_n() and not behalten:
+                if not input () in ja and not behalten:
                     self.deutsch[index].insert(int(nr) - 1, weg)
                     self.aendern(index, neue_vok=True)
-                elif not self.j_n():
+                elif not input () in ja:
                     self.deutsch[index][int(nr)-1] = weg
                     self.aendern(index, neue_vok=True)
                 if neue_vok:
-                    hinzugefügt +=1
+                     self.hinzugefügt +=1
                 self.menu()
 
     def score_löschen(self):
@@ -531,13 +510,11 @@ class Vokabeln:
      
     def ende(self, neu=False):
         """ Programm beenden, Statistik anzeigen und speichern """
-        clear()
         
         new = self.statistik()           
         with open(path_data, "a") as data:
             writer = csv.writer(data)
             writer.writerow(new)
-        print(len(self.meta))
             
         neu_score = []    
         with open(path_csv, "w") as csv_score:
@@ -550,36 +527,12 @@ class Vokabeln:
                 neu_score.append(line)                       
             writer.writerows(neu_score)
         if neu:
-            clear()
-            print(self.title)
-            print("\n\n" + "*" * 45)
-            print("g e s p e i c h e r t".center(45))
-            print("*" * 45)
-            #print("\n\n<enter>", end = "")
-            weiter = input
+            print(f"\n\n{col.G}gesichert{col.E}")
+            weiter = input()
             return
         else:
-            clear()
-            print(self.title)
-            print("\n\n" + "*" * 45)
-            print("g e s p e i c h e r t".center(45))
-            print("*" * 45)
-            print("\n")
-            print("TSCHÜSS !!".center(45))
-            print("\n\n")
+            print(f"\n{col.G}Dateien aktualisiert!{col.E}\n\n{col.BR}TSCHÜSS !!{col.E}\n")
             sys.exit(0)
-            
-    def j_n(self):
-        """ häufige ja/nein Abfrage """
-        j_n = input()
-        ja =   ["j", "y", "ja", "yes"]
-        if j_n in ja:
-            return True
-        return False
-    
-    def prompt(self):
-        """ Prompt- Symbol """
-        return " >> "
 
 menu = Vokabeln()
 start = menu.statistik()
